@@ -88,15 +88,15 @@ const app = express();
 
 // Allowed origins for CORS
 const allowedOrigins = [
-  "https://front-end-auth-4wmf.vercel.app", // القديم
-  "https://test-front-end-final.vercel.app", // الجديد
-  "http://localhost:5173",                  // dev
+  "https://test-front-end-final.vercel.app",
+  "https://front-end-auth-4wmf.vercel.app",
+  "http://localhost:5173",
 ];
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin) return callback(null, true); // Postman / curl
+      if (!origin) return callback(null, true);
       if (allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
@@ -110,21 +110,26 @@ app.use(
 // Middleware
 app.use(express.json());
 
-// Static
+// Static files
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/public", express.static(path.join(__dirname, "public")));
+
+// Favicon route
+app.get("/favicon.ico", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "favicon.ico"));
+});
 
 // Test route
 app.get("/", (req, res) => {
   res.send("Backend is running successfully 🚀");
 });
 
-// Upload
+// Upload route
 app.post("/upload", upload.single("file"), (req, res) => {
   res.json({ file: req.file });
 });
 
-// Routes
+// API Routes
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/book", bookRoutes);
 app.use("/api/v1/user", userRoutes);
