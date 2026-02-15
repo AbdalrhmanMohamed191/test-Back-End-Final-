@@ -88,15 +88,15 @@ const app = express();
 
 // Allowed origins for CORS
 const allowedOrigins = [
+  "https://front-end-auth-4wmf.vercel.app", // القديم
   "https://test-front-end-final.vercel.app", // الجديد
-  "https://front-end-auth-4wmf.vercel.app", // القديم (لو محتاجه)
   "http://localhost:5173",                  // dev
 ];
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin) return callback(null, true); // Postman/curl
+      if (!origin) return callback(null, true); // Postman / curl
       if (allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
@@ -106,7 +106,6 @@ app.use(
     credentials: true,
   })
 );
-
 
 // Middleware
 app.use(express.json());
@@ -137,4 +136,5 @@ connectDB();
 
 // Export for Vercel
 module.exports = app;
+
 
